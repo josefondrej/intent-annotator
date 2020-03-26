@@ -41,9 +41,10 @@ def load_from_file():
                            exception=exception,
                            load_successful=(exception is None and request.method == "POST"))
 
-    @app.route("/annotate")
-    def annotate():
-        return render_template("annotate.html")
+
+@app.route("/annotate")
+def annotate():
+    return render_template("annotate.html")
 
 
 if __name__ == "__main__":
