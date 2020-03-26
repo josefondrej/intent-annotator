@@ -1,4 +1,16 @@
 {% extends "template_base.html" -%}
+{% from 'dragndrop_macro.html' import dragndrop %}
+
 {% block content -%}
-Load from file.
+
+Please choose the intent examples and workspace files. <br><br>
+
+<form action="/load_files" method="POST" enctype="multipart/form-data">
+    {{dragndrop("examples")}}
+    {{dragndrop("workspace")}}
+
+    <button type="submit">Upload Files</button>
+</form>
+
+
 {%- endblock %}

@@ -1,0 +1,34 @@
+{% macro dragndrop(name) %}
+<div id="{{name}}_fileselect_wrapper" class="fileselect_wrapper">
+    <div id="{{name}}_fileselect_label" class="fileselect_label">Choose the {{name}} file.</div>
+    <input type="file" id="{{name}}_fileselect" class="fileselect" name="{{name}}_fileselect"/>
+</div>
+
+<script>
+    $("#{{name}}_fileselect").on("dragenter", function () {
+        $("#{{name}}_fileselect_wrapper").css("border-color", "#5b00ff");
+    })
+
+
+    $("#{{name}}_fileselect").on("dragleave", function () {
+        $("#{{name}}_fileselect_wrapper").css("border-color", "silver");
+    })
+
+    $("#{{name}}_fileselect").on("drop", function () {
+        $("#{{name}}_fileselect_label").css({
+            "color": "#666",
+            "font-weight": "bold"
+        });
+        $("#{{name}}_fileselect_wrapper").css({
+            "background-color": "#eee",
+            "border-color": "silver"
+        });
+    })
+
+    $("#{{name}}_fileselect").bind("change", function () {
+        let filePath = $("#{{name}}_fileselect").val().split("\\");
+        let fileName = filePath[filePath.length - 1];
+        $("#{{name}}_fileselect_label").text("Uploaded " + fileName);
+    })
+</script>
+{% endmacro %}

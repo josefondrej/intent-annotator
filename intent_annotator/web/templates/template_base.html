@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Intent annotation tool</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='/js/jquery-3.4.1.min.js') }}"></script>
 
 </head>
 <body>
 <div class="header">
     <a href="/">IBM <b> Watson Assistant Annotator</b></a>
-    <a href="/load_files">load files</a>
-    <a href="/annotate">annotate</a>
+    <a href="/load_files">Load Files</a>
+    <a href="/annotate">Annotate</a>
 </div>
 <div class="content">
     {% block content %}
