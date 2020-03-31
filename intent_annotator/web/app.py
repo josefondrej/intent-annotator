@@ -3,6 +3,10 @@ import traceback
 
 from flask import render_template, Flask, request
 
+from intent_annotator.core.annotator import Annotator
+from intent_annotator.core.examples import Examples
+from intent_annotator.core.workspace import Workspace
+
 app = Flask(__name__)
 
 # Initialize paths
@@ -11,7 +15,10 @@ PACKAGE_PATH = "/".join(THIS_FILE_PATH.split("/")[:-2])
 RESOURCES_PATH = PACKAGE_PATH + "/files/"
 
 WORKSPACE_FILE_PATH = RESOURCES_PATH + "workspace.json"
-EXAMPLES_FILE_PATH = RESOURCES_PATH + "examples.csv"
+
+workspace = Workspace()
+examples = Examples()
+annotator = Annotator(workspace, examples)
 
 
 @app.route("/", methods=["POST", "GET"])
@@ -21,30 +28,28 @@ def load_from_file():
 
     if request.method == "POST":
         try:
-            workspace = request.files["workspace_fileselect"]
-            examples = request.files["examples_fileselect"]
+            workspace_file = request.files["workspace_fileselect"]
+            examples_file = request.files["examples_fileselect"]
 
-            if not workspace:
-                exception = "Workspace file missing."
+            workspace.load(workspace_file.stream)
+            examples.load_from_excel(examples_file.stream)
 
-            if not examples:
-                exception = "Examples file missing."
-
-            workspace.save(WORKSPACE_FILE_PATH)
-            examples.save(EXAMPLES_FILE_PATH)
-
-        except exception as e:
+        except Exception as e:
             traceback.print_exc()
-            exception = str(e.message)
+            exception = str(e)
 
     return render_template("load_files.html",
                            exception=exception,
                            load_successful=(exception is None and request.method == "POST"))
 
 
-@app.route("/annotate")
+@app.route("/annotate", methods=["POST", "GET"])
 def annotate():
-    return render_template("annotate.html")
+    exception = None
+
+    return render_template("annotate.html",
+                           annotator=annotator,
+                           exception=exception)
 
 
 if __name__ == "__main__":

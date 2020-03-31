@@ -1,0 +1,107 @@
+body {
+    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    color: black;
+    backgroud-color: #f4f7fb;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: #161616;
+    height: 53px;
+}
+
+.header a {
+    text-decoration: none;
+    padding-left: 30px;
+    padding-right: 30px;
+    color: white;
+    height: 35px;
+    padding-top: 18px;
+    display: block;
+    float: left;
+}
+
+.header a:hover {
+    background-color: #6c757d;
+}
+
+.footer {
+}
+
+.content {
+    margin-top: 40px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 40px;
+}
+
+.fileselect {
+    opacity: 0;
+    display: block;
+    float: left;
+    width: 500px;
+    height: 200px;
+}
+
+.fileselect_wrapper {
+    display: block;
+    width: 500px;
+    height: 200px;
+    border: 2px dashed silver;
+    background-color: #e9eefe;
+    margin-right: 30px;
+    margin-bottom: 30px;
+}
+
+.fileselect_label {
+    display: block;
+    width: 500px;
+    height: 0px;
+    float: left;
+    text-align: center;
+    color: gray;
+    padding-top: 20px;
+}
+
+.upload_layout_env {
+    display: block;
+    height: 120px;
+}
+
+button {
+    display: block;
+    border: none;
+    text-align: left;
+    padding-left: 20px;
+    color: white;
+    background-color: #5b00ff;
+    width: 200px;
+    height: 45px;
+}
+
+.message {
+    display: block;
+    width: 450px;
+    margin-bottom: 20px;
+    background-color: #333;
+    color: white;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 30px;
+    border-left: 8px solid;
+}
+
+.info {
+    border-color: lawngreen;
+}
+
+.error {
+    border-color: orangered;
+}
+
+.annotate_block {
+
+}

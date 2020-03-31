@@ -1,4 +1,17 @@
 {% extends "template_base.html" -%}
 {% block content -%}
-Annotate.
+
+{% if exception %}
+<div class="error message"><b>Error: </b>{{ exception }}</div>
+{% endif %}
+
+{% for example in annotator.examples %}
+<div class="annotate_block">
+    <div class="example">{{ example }}</div>
+    <div class="annotation">
+        <input>
+    </div>
+</div>
+{% endfor %}
+
 {%- endblock %}

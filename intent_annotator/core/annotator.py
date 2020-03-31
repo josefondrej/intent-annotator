@@ -7,6 +7,10 @@ class Annotator(object):
         self._workspace = workspace
         self._examples = examples
 
+    @property
+    def examples(self):
+        return self._examples.examples
+
     def get_example(self, example_index: int) -> str:
         return self._examples.examples[example_index]
 

@@ -3,9 +3,8 @@ from typing import Dict, List
 
 
 class Workspace(object):
-    def __init__(self, workspace_json_path: str):
-        self._workspace_json_path = workspace_json_path
-        self._workspace_json = self.load(self._workspace_json_path)
+    def __init__(self):
+        pass
 
     @property
     def json(self) -> Dict:
@@ -29,7 +28,5 @@ class Workspace(object):
         with open(self._workspace_json_path, "w") as workspace_file:
             json.dump(self._workspace_json, workspace_file)
 
-    def load(self, file_path: str) -> Dict:
-        with open(file_path, "r") as file:
-            workspace_json = json.dump(file)
-        return workspace_json
+    def load(self, file):
+        self._workspace_json = json.load(file)

@@ -4,14 +4,13 @@ import pandas as pd
 
 
 class Examples(object):
-    def __init__(self, examples_file_path: str):
-        self._examples_file_path = examples_file_path
-        self._examples = self._load_excel(self._examples_file_path)
+    def __init__(self):
+        pass
 
     @property
     def examples(self) -> List[str]:
         return self._examples
 
-    def _load_excel(self, file_path: str) -> List[str]:
-        examples = pd.read_excel(file_path)
-        return examples
+    def load_from_excel(self, file):
+        self._examples = list(pd.read_csv(file).iloc[:, 0])
+        print(self._examples)
