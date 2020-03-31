@@ -1,6 +1,5 @@
 import json
 from typing import Dict, List, Union
-import uuid
 
 from werkzeug.datastructures import FileStorage
 
@@ -20,9 +19,8 @@ class File(object):
     def json_dict(self) -> Union[List, Dict]:
         return self._json_dict
 
-    def load_from_file_storage(self, file_storage: FileStorage, suffix: str = ".json"):
-        file_type = self.__class__.__name__.lower() + "_"
-        self._file_name = file_type + str(uuid.uuid4()) + suffix
+    def load_from_file_storage(self, file_storage: FileStorage):
+        self._file_name = file_storage.filename
         file_storage.save(self.file_path)
 
         with open(self.file_path) as file:

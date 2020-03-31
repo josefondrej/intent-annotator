@@ -8,12 +8,9 @@ class Workspace(File):
         pass
 
     @property
-    def json(self) -> Dict:
-        return self.json_dict
-
-    @property
     def intent_names(self) -> List[str]:
-        raise NotImplementedError("TODO: Implement.")  # Cached possibly.
+        names = [intent["intent"] for intent in self.json_dict["intents"]]
+        return names
 
     def filter_intent_names(self, substring: str) -> List[str]:
         intents = self.intent_names

@@ -1,17 +1,29 @@
 {% extends "template_base.html" -%}
 {% block content -%}
 
-{% if exception %}
-<div class="error message"><b>Error: </b>{{ exception }}</div>
-{% endif %}
+    <script type="text/javascript" src="{{ url_for('static', filename='/js/annotate.js') }}"></script>
+    <script type="text/javascript">
+        var annotator = new Annotator([{% for intent in annotator.intent_names %}"{{ intent }}", {% endfor %}]);
+    </script>
 
-{% for example in annotator.examples %}
-<div class="annotate_block">
-    <div class="example">{{ example }}</div>
-    <div class="annotation">
-        <input>
-    </div>
-</div>
-{% endfor %}
+    {% set MAX_EXAMPLE_LENGTH = 200 -%}
+
+    <form class="annotation_envelope">
+        <button>Save</button>
+        {% for example in annotator.examples %}
+            <div class="annotation_block block_color_{{ loop.index % 2 }}">
+                <div class="intent_example">
+                    {% if example | length > MAX_EXAMPLE_LENGTH %}
+                        {{ example[:MAX_EXAMPLE_LENGTH] + "..." }}
+                    {% else %}
+                        {{ example }}
+                    {% endif %}
+                </div>
+                <div class="annotation">
+                    <input type="text" id="intent_annotation_{{ loop.index - 1 }}">
+                </div>
+            </div>
+        {% endfor %}
+    </form>
 
 {%- endblock %}

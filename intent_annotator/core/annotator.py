@@ -11,6 +11,10 @@ class Annotator(object):
     def examples(self):
         return self._examples.examples
 
+    @property
+    def intent_names(self):
+        return self._workspace.intent_names
+
     def get_example(self, example_index: int) -> str:
         return self._examples.examples[example_index]
 

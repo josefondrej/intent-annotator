@@ -9,5 +9,4 @@ class Examples(File):
 
     @property
     def examples(self) -> List[str]:
-        return self._examples
-
+        return self.json_dict
