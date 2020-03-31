@@ -1,14 +1,15 @@
-import json
 from typing import Dict, List
 
+from intent_annotator.core.file import File
 
-class Workspace(object):
+
+class Workspace(File):
     def __init__(self):
         pass
 
     @property
     def json(self) -> Dict:
-        return self._workspace_json
+        return self.json_dict
 
     @property
     def intent_names(self) -> List[str]:
@@ -23,10 +24,3 @@ class Workspace(object):
 
     def add_intent_example(self, intent_name: str, example: str):
         raise NotImplementedError("TODO: Implement.")  # Check if it is not there already
-
-    def dump(self):
-        with open(self._workspace_json_path, "w") as workspace_file:
-            json.dump(self._workspace_json, workspace_file)
-
-    def load(self, file):
-        self._workspace_json = json.load(file)

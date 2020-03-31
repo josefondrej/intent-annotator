@@ -1,4 +1,3 @@
-import os
 import traceback
 
 from flask import render_template, Flask, request
@@ -8,13 +7,6 @@ from intent_annotator.core.examples import Examples
 from intent_annotator.core.workspace import Workspace
 
 app = Flask(__name__)
-
-# Initialize paths
-THIS_FILE_PATH = os.path.realpath(__file__)
-PACKAGE_PATH = "/".join(THIS_FILE_PATH.split("/")[:-2])
-RESOURCES_PATH = PACKAGE_PATH + "/files/"
-
-WORKSPACE_FILE_PATH = RESOURCES_PATH + "workspace.json"
 
 workspace = Workspace()
 examples = Examples()
@@ -31,8 +23,8 @@ def load_from_file():
             workspace_file = request.files["workspace_fileselect"]
             examples_file = request.files["examples_fileselect"]
 
-            workspace.load(workspace_file.stream)
-            examples.load_from_excel(examples_file.stream)
+            workspace.load_from_file_storage(workspace_file)
+            examples.load_from_file_storage(examples_file)
 
         except Exception as e:
             traceback.print_exc()
