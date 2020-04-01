@@ -10,12 +10,31 @@ class Annotator {
     _init() {
         var that = this;
         document.addEventListener("keydown", function (event) {
-                if (["ArrowUp", "ArrowDown"].includes(event.key)) {
+            if (["ArrowRight", "ArrowLeft"].includes(event.key)) {
                     let nextId = that._getNextId(event.key);
                     $("#" + nextId).focus();
                 }
             }
         );
+
+        var inputs = $("input[id^=" + ANNOTATION_ID_PREFIX + "]");
+        inputs.autocomplete({
+            source: that._intents,
+            autoFocus: true,
+            delay: 0,
+            minLength: 0
+        });
+
+        inputs.focusout(function () {
+            // console.log("FocusOut")
+            if ($(this).val().trim() != "") {
+                $(this).addClass("highlited_annotation");
+                $(this).css({"border": "none"});
+            } else {
+                $(this).removeClass("highlited_annotation");
+                $(this).removeAttr("style");
+            }
+        });
     }
 
     _intToAnnotationId(index) {
@@ -43,10 +62,10 @@ class Annotator {
         let currentIndex = this._getCurrentFocusIndex();
         let nextIndex = null;
         switch (arrow) {
-            case "ArrowUp":
+            case "ArrowLeft":
                 nextIndex = Math.max(currentIndex - 1, 0);
                 break;
-            case "ArrowDown":
+            case "ArrowRight":
                 nextIndex = Math.min(currentIndex + 1, this._intents.length)
                 break;
         }
