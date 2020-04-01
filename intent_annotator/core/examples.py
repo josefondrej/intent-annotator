@@ -19,3 +19,4 @@ class Examples(File):
 
         with open(self.file_path) as file:
             self._json_dict = file.readlines()
+            self._json_dict = [line.strip() for line in self._json_dict]
