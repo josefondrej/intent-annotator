@@ -3,6 +3,10 @@
 
     {% set MAX_EXAMPLE_LENGTH = 200 -%}
 
+    {% if workspace_updated %}
+        <div class="info message"><b>Info: </b>Examples saved successfully to workspace.</div>
+    {% endif %}
+
     {% if annotator.examples | length > 0 %}
         <a href="{{ url_for('static', filename="files/"+annotator._workspace.file_name) }}">Download workspace</a><br>
         <br>

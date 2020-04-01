@@ -39,17 +39,21 @@ def load_from_file():
 def annotate():
     ANNOTATION_ID_PREFIX = "intent_annotation_";
 
+    workspace_updated = False
+
     if request.method == "GET":
         for example_id, example in enumerate(annotator.examples):
             example_intent = request.args.get(ANNOTATION_ID_PREFIX + str(example_id), "")
             example_intent = example_intent.strip()
             if len(example_intent) > 0:
                 annotator.annotate_example(example, example_intent)
+                workspace_updated = True
 
         annotator.dump_workspace()
 
     return render_template("annotate.html",
-                           annotator=annotator)
+                           annotator=annotator,
+                           workspace_updated=workspace_updated)
 
 
 if __name__ == "__main__":

@@ -3,22 +3,22 @@
 
 {% block content -%}
 
-{% if exception %}
-<div class="error message"><b>Error: </b>{{ exception }}</div>
-{% endif %}
+    {% if exception %}
+        <div class="error message"><b>Error: </b>{{ exception }}</div>
+    {% endif %}
 
-{% if load_successful %}
-<div class="info message"><b>Info: </b>Files loaded successfully.</div>
-{% endif %}
+    {% if load_successful %}
+        <div class="info message"><b>Info: </b>Files loaded successfully.</div>
+    {% endif %}
 
-Please choose the intent examples and workspace files. <br><br>
+    Please choose the intent examples and workspace files. <br><br>
 
-<form action="/load_files" method="POST" enctype="multipart/form-data">
-    {{dragndrop("examples")}}
-    {{dragndrop("workspace")}}
+    <form action="/load_files" method="POST" enctype="multipart/form-data">
+        {{ dragndrop("examples") }}
+        {{ dragndrop("workspace") }}
 
-    <button type="submit">Upload Files</button>
-</form>
+        <button type="submit">Upload Files</button>
+    </form>
 
 
 {%- endblock %}
