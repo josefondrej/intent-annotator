@@ -49,7 +49,8 @@ def annotate():
                 annotator.annotate_example(example, example_intent)
                 workspace_updated = True
 
-        annotator.dump_workspace()
+        if workspace_updated:
+            annotator.dump_workspace()
 
     return render_template("annotate.html",
                            annotator=annotator,
