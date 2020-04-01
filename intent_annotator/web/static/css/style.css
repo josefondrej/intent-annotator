@@ -113,10 +113,11 @@ button {
     width: 800px;
     display: block;
     float: left;
-    height: 40px;
+    height: auto;
     float: left;
     padding-top: 15px;
     padding-left: 30px;
+    padding-bottom: 15px;
 }
 
 .block_color_0 {
