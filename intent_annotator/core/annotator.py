@@ -10,7 +10,7 @@ class Annotator(object):
     @property
     def examples(self):
         try:
-            return self._examples.examples
+            return list(set(self._examples.examples) - set(self._workspace.intent_examples))
         except:
             return []
 

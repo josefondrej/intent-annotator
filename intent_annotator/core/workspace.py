@@ -13,6 +13,16 @@ class Workspace(File):
         names = [intent[FIELD_INTENT] for intent in self.json_dict[FIELD_INTENTS]]
         return names
 
+    @property
+    def intent_examples(self) -> List[str]:
+        examples = []
+        intent_dict = self.json_dict[FIELD_INTENTS]
+        for intent in intent_dict:
+            intent_examples = [ex[FIELD_TEXT] for ex in intent[FIELD_EXAMPLES]]
+            examples.extend(intent_examples)
+
+        return examples
+
     def filter_intent_names(self, substring: str) -> List[str]:
         intents = self.intent_names
         return [intent for intent in intents if substring in intent]
