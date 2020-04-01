@@ -2,6 +2,10 @@ from typing import Dict, List
 
 from intent_annotator.core.file import File
 
+FIELD_INTENT = "intent"
+FIELD_INTENTS = "intents"
+FIELD_EXAMPLES = "examples"
+FIELD_TEXT = "text"
 
 class Workspace(File):
     def __init__(self):
@@ -9,7 +13,7 @@ class Workspace(File):
 
     @property
     def intent_names(self) -> List[str]:
-        names = [intent["intent"] for intent in self.json_dict["intents"]]
+        names = [intent[FIELD_INTENT] for intent in self.json_dict[FIELD_INTENTS]]
         return names
 
     def filter_intent_names(self, substring: str) -> List[str]:
@@ -20,4 +24,21 @@ class Workspace(File):
         raise NotImplementedError("TODO: Implement.")
 
     def add_intent_example(self, intent_name: str, example: str):
-        raise NotImplementedError("TODO: Implement.")  # Check if it is not there already
+        example_dict = self._create_example_dict(example)
+        intent_dict = self._find_intent_dict(intent_name)
+        intent_dict[FIELD_EXAMPLES].append(example_dict)
+
+    def _create_intent_dict(self, intent_name: str) -> Dict:
+        return {FIELD_INTENT: intent_name, FIELD_EXAMPLES: []}
+
+    def _create_example_dict(self, example: str) -> Dict:
+        return {FIELD_TEXT: example}
+
+    def _find_intent_dict(self, intent_name: str) -> Dict:
+        for intent_dict in self.json_dict[FIELD_INTENTS]:
+            if intent_dict[FIELD_INTENT] == intent_name:
+                return intent_dict
+
+        intent_dict = self._create_intent_dict(intent_name)
+        self.json_dict[FIELD_INTENTS].append(intent_dict)
+        return intent_dict

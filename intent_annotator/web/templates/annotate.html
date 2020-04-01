@@ -2,36 +2,46 @@
 {% block content -%}
 
     {% set MAX_EXAMPLE_LENGTH = 200 -%}
-    <span class="code">&#8594;</span> and <span class="code">&#8592;</span> navigate between inputs <br>
-    <span class="code">&#8593;</span> and <span class="code">&#8595;</span> navigate between hints <br>
-    <span class="code">&#8595;</span> show all hints <br>
-    <span class="code">Enter</span> select the currently focused hint <br>
-    <span class="code">Tab</span> select the currently focused hint and move to the next input <br><br>
 
-    <form class="annotation_envelope">
-        <button>Save</button>
-        {% for example in annotator.examples %}
-            <div class="annotation_block block_color_{{ loop.index % 2 }}">
-                <div class="intent_example">
-                    {% if example | length > MAX_EXAMPLE_LENGTH %}
-                        {{ example[:MAX_EXAMPLE_LENGTH] + "..." }}
-                    {% else %}
-                        {{ example }}
-                    {% endif %}
-                </div>
-                <div class="annotation">
-                    <input type="text" id="intent_annotation_{{ loop.index - 1 }}">
-                </div>
-            </div>
-        {% endfor %}
-    </form>
+    {% if annotator.examples | length > 0 %}
+        <a href="{{ url_for('static', filename="files/"+annotator._workspace.file_name) }}">Download workspace</a><br>
+        <br>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='/css/jquery-ui.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='/js/annotate.js') }}"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var annotator = new Annotator([{% for intent in annotator.intent_names %}"{{ intent }}", {% endfor %}]);
-        });
-    </script>
+        <span class="code">&#8594;</span> and <span class="code">&#8592;</span> navigate between inputs <br>
+        <span class="code">&#8593;</span> and <span class="code">&#8595;</span> navigate between hints <br>
+        <span class="code">&#8595;</span> show all hints <br>
+        <span class="code">Enter</span> select the currently focused hint <br>
+        <span class="code">Tab</span> select the currently focused hint and move to the next input <br><br>
+
+        <form class="annotation_envelope" action="/annotate">
+            <button type="submit">Save</button>
+
+            {% for example in annotator.examples %}
+                <div class="annotation_block block_color_{{ loop.index % 2 }}">
+                    <div class="intent_example">
+                        {% if example | length > MAX_EXAMPLE_LENGTH %}
+                            {{ example[:MAX_EXAMPLE_LENGTH] + "..." }}
+                        {% else %}
+                            {{ example }}
+                        {% endif %}
+                    </div>
+                    <div class="annotation">
+                        <input type="text" id="intent_annotation_{{ loop.index - 1 }}"
+                               name="intent_annotation_{{ loop.index - 1 }}">
+                    </div>
+                </div>
+            {% endfor %}
+        </form>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='/css/jquery-ui.css') }}">
+        <script type="text/javascript" src="{{ url_for('static', filename='/js/annotate.js') }}"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var annotator = new Annotator([{% for intent in annotator.intent_names %}"{{ intent }}", {% endfor %}]);
+            });
+        </script>
+    {% else %}
+        Please first <a href="load_files"> select examples and workspace files</a>.
+    {% endif %}
 
 {%- endblock %}

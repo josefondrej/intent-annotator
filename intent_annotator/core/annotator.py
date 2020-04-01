@@ -9,7 +9,10 @@ class Annotator(object):
 
     @property
     def examples(self):
-        return self._examples.examples
+        try:
+            return self._examples.examples
+        except:
+            return []
 
     @property
     def intent_names(self):
@@ -20,3 +23,9 @@ class Annotator(object):
 
     def annotate_example(self, example: str, intent_name: str):
         self._workspace.add_intent_example(intent_name, example)
+
+    def dump_workspace(self):
+        try:
+            self._workspace.dump()
+        except:
+            pass

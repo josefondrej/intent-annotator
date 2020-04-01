@@ -28,4 +28,4 @@ class File(object):
 
     def dump(self):
         with open(self.file_path, "w") as file:
-            json.dump(self.json_dict, file)
+            json.dump(self.json_dict, file, indent=4, separators=(',', ': '))

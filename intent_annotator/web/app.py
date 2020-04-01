@@ -1,6 +1,6 @@
 import traceback
 
-from flask import render_template, Flask, request
+from flask import render_template, Flask, request, send_file
 
 from intent_annotator.core.annotator import Annotator
 from intent_annotator.core.examples import Examples
@@ -37,6 +37,17 @@ def load_from_file():
 
 @app.route("/annotate", methods=["POST", "GET"])
 def annotate():
+    ANNOTATION_ID_PREFIX = "intent_annotation_";
+
+    if request.method == "GET":
+        for example_id, example in enumerate(annotator.examples):
+            example_intent = request.args.get(ANNOTATION_ID_PREFIX + str(example_id), "")
+            example_intent = example_intent.strip()
+            if len(example_intent) > 0:
+                annotator.annotate_example(example, example_intent)
+
+        annotator.dump_workspace()
+
     return render_template("annotate.html",
                            annotator=annotator)
 
