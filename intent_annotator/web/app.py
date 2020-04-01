@@ -1,16 +1,14 @@
 import traceback
 
 from flask import render_template, Flask, request, send_file
+from flask_session import Session
 
 from intent_annotator.core.annotator import Annotator
 from intent_annotator.core.examples import Examples
 from intent_annotator.core.workspace import Workspace
 
 app = Flask(__name__)
-
-workspace = Workspace()
-examples = Examples()
-annotator = Annotator(workspace, examples)
+session = Session(app)
 
 
 @app.route("/", methods=["POST", "GET"])
@@ -23,8 +21,14 @@ def load_from_file():
             workspace_file = request.files["workspace_fileselect"]
             examples_file = request.files["examples_fileselect"]
 
+            workspace = Workspace()
+            examples = Examples()
+            annotator = Annotator(workspace, examples)
+
             workspace.load_from_file_storage(workspace_file)
             examples.load_from_file_storage(examples_file)
+
+            session.annotator = annotator
 
         except Exception as e:
             traceback.print_exc()
@@ -40,17 +44,23 @@ def annotate():
     ANNOTATION_ID_PREFIX = "intent_annotation_";
 
     workspace_updated = False
+    annotator = None
 
-    if request.method == "GET":
-        for example_id, example in enumerate(annotator.examples):
-            example_intent = request.args.get(ANNOTATION_ID_PREFIX + str(example_id), "")
-            example_intent = example_intent.strip()
-            if len(example_intent) > 0:
-                annotator.annotate_example(example, example_intent)
-                workspace_updated = True
+    try:
+        annotator = session.annotator
 
-        if workspace_updated:
-            annotator.dump_workspace()
+        if request.method == "GET":
+            for example_id, example in enumerate(annotator.examples):
+                example_intent = request.args.get(ANNOTATION_ID_PREFIX + str(example_id), "")
+                example_intent = example_intent.strip()
+                if len(example_intent) > 0:
+                    annotator.annotate_example(example, example_intent)
+                    workspace_updated = True
+
+            if workspace_updated:
+                annotator.dump_workspace()
+    except:
+        pass
 
     return render_template("annotate.html",
                            annotator=annotator,

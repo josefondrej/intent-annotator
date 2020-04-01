@@ -7,8 +7,15 @@
         <div class="info message"><b>Info: </b>Examples saved successfully to workspace.</div>
     {% endif %}
 
-    {% if annotator.examples | length > 0 %}
-        <a href="{{ url_for('static', filename="files/"+annotator._workspace.file_name) }}">Download workspace</a><br>
+    {% if annotator != None %}
+        {% set display_annotations = annotator.examples | length > 0 %}
+    {% else %}
+        {% set display_annotations = False %}
+    {% endif %}
+
+    {% if display_annotations %}
+        <a href="{{ url_for('static', filename="files/"+annotator._workspace.file_name) }}">Download workspace</a> <br>
+        [ you might need to refresh the browser after clicking the Download workspace link to load the latest version ]<br>
         <br>
 
         <span class="code">&#8594;</span> and <span class="code">&#8592;</span> navigate between inputs <br>

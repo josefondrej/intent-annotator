@@ -11,7 +11,9 @@
         <div class="info message"><b>Info: </b>Files loaded successfully.</div>
     {% endif %}
 
-    Please choose the intent examples and workspace files. <br><br>
+    Please choose the intent examples and workspace files. <br>
+    <b>[ WARNING ]</b> If you already loaded some files, loading new will override them.
+    <br><br>
 
     <form action="/load_files" method="POST" enctype="multipart/form-data">
         {{ dragndrop("examples") }}
