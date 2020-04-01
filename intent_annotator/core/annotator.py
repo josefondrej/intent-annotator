@@ -1,3 +1,5 @@
+from typing import List
+
 from intent_annotator.core.examples import Examples
 from intent_annotator.core.workspace import Workspace
 
@@ -8,11 +10,15 @@ class Annotator(object):
         self._examples = examples
 
     @property
-    def examples(self):
+    def examples(self) -> List[str]:
         try:
             return list(set(self._examples.examples) - set(self._workspace.intent_examples))
         except:
             return []
+
+    @property
+    def all_examples(self) -> List[str]:
+        return list(set(self._examples.examples))
 
     @property
     def intent_names(self):

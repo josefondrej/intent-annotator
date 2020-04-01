@@ -1,16 +1,15 @@
 import traceback
 import uuid
 
-from flask import render_template, Flask, request, send_file
-from flask_session import Session
+from flask import render_template, Flask, request
 
 from intent_annotator.core.annotator import Annotator
 from intent_annotator.core.examples import Examples
 from intent_annotator.core.workspace import Workspace
 
 app = Flask(__name__)
-session = Session(app)
 
+global_variables = {}
 
 @app.route("/", methods=["POST", "GET"])
 @app.route("/load_files", methods=["POST", "GET"])
@@ -30,7 +29,7 @@ def load_from_file():
             workspace.load_from_file_storage(workspace_file)
             examples.load_from_file_storage(examples_file)
 
-            session.annotator = annotator
+            global_variables["annotator"] = annotator
 
         except Exception as e:
             traceback.print_exc()
@@ -49,7 +48,7 @@ def annotate():
     annotator = None
 
     try:
-        annotator = session.annotator
+        annotator = global_variables["annotator"]
 
         if request.method == "GET":
             for example_id, example in enumerate(annotator.examples):
