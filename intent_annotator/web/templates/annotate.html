@@ -14,7 +14,8 @@
     {% endif %}
 
     {% if display_annotations %}
-        <a href="{{ url_for('static', filename="files/"+annotator._workspace.file_name) }}">Download workspace</a> <br>
+        <a href="{{ url_for('static', filename="files/"+annotator._workspace.relative_file_path) }}">Download
+            workspace</a> <br>
         [ you might need to refresh the browser after clicking the Download workspace link to load the latest version ]<br>
         <br>
 

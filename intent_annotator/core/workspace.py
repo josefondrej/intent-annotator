@@ -8,9 +8,6 @@ FIELD_EXAMPLES = "examples"
 FIELD_TEXT = "text"
 
 class Workspace(File):
-    def __init__(self):
-        pass
-
     @property
     def intent_names(self) -> List[str]:
         names = [intent[FIELD_INTENT] for intent in self.json_dict[FIELD_INTENTS]]
@@ -26,7 +23,9 @@ class Workspace(File):
     def add_intent_example(self, intent_name: str, example: str):
         example_dict = self._create_example_dict(example)
         intent_dict = self._find_intent_dict(intent_name)
-        intent_dict[FIELD_EXAMPLES].append(example_dict)
+        examples = intent_dict[FIELD_EXAMPLES]
+        if example not in [ex[FIELD_TEXT] for ex in examples]:
+            intent_dict[FIELD_EXAMPLES].append(example_dict)
 
     def _create_intent_dict(self, intent_name: str) -> Dict:
         return {FIELD_INTENT: intent_name, FIELD_EXAMPLES: []}

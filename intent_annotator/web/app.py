@@ -1,4 +1,5 @@
 import traceback
+import uuid
 
 from flask import render_template, Flask, request, send_file
 from flask_session import Session
@@ -21,8 +22,9 @@ def load_from_file():
             workspace_file = request.files["workspace_fileselect"]
             examples_file = request.files["examples_fileselect"]
 
-            workspace = Workspace()
-            examples = Examples()
+            id = str(uuid.uuid4())
+            workspace = Workspace(id=id)
+            examples = Examples(id=id)
             annotator = Annotator(workspace, examples)
 
             workspace.load_from_file_storage(workspace_file)
