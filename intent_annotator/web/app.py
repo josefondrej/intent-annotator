@@ -2,7 +2,6 @@ import traceback
 import uuid
 
 from flask import render_template, Flask, request, session
-import jsonpickle
 
 from intent_annotator.core.annotator import Annotator
 from intent_annotator.core.examples import Examples
@@ -10,6 +9,7 @@ from intent_annotator.core.workspace import Workspace
 
 app = Flask(__name__)
 app.secret_key = str(uuid.uuid4())
+
 
 @app.route("/", methods=["POST", "GET"])
 @app.route("/load_files", methods=["POST", "GET"])
@@ -24,12 +24,15 @@ def load_from_file():
             id = str(uuid.uuid4())
             workspace = Workspace(id=id)
             examples = Examples(id=id)
-            annotator = Annotator(workspace, examples)
 
             workspace.load_from_file_storage(workspace_file)
             examples.load_from_file_storage(examples_file)
 
-            session["annotator"] = jsonpickle.dumps(annotator)
+            workspace.dump_jsonpickle()
+            examples.dump_jsonpickle()
+
+            session["session_id"] = id
+
 
         except Exception as e:
             traceback.print_exc()
@@ -48,7 +51,12 @@ def annotate():
     annotator = None
 
     try:
-        annotator = jsonpickle.loads(session["annotator"])
+        id = session["session_id"]
+
+        workspace = Workspace.load_jsonpickle(id)
+        examples = Examples.load_jsonpickle(id)
+
+        annotator = Annotator(workspace, examples)
 
         if request.method == "GET":
             for example_id, example in enumerate(annotator.examples):
@@ -60,6 +68,7 @@ def annotate():
 
             if workspace_updated:
                 annotator.dump_workspace()
+                annotator.dump_workspace_jsonpickle()
     except:
         pass
 

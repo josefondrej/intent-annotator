@@ -35,3 +35,6 @@ class Annotator(object):
             self._workspace.dump()
         except:
             pass
+
+    def dump_workspace_jsonpickle(self):
+        self._workspace.dump_jsonpickle()
