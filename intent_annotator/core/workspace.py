@@ -34,7 +34,8 @@ class Workspace(File):
         example_dict = self._create_example_dict(example)
         intent_dict = self._find_intent_dict(intent_name)
         examples = intent_dict[FIELD_EXAMPLES]
-        if example not in [ex[FIELD_TEXT] for ex in examples]:
+        example_texts = [ex[FIELD_TEXT].lower().strip() for ex in examples]
+        if example.strip().lower() not in example_texts:
             intent_dict[FIELD_EXAMPLES].append(example_dict)
 
     def _create_intent_dict(self, intent_name: str) -> Dict:
